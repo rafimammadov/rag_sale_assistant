@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Evidence-grounded sales assistant with company approval before order processing."
+    />
+    <title>OMDI Sales Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/">
+          <span class="brand-mark">O</span>
+          <span>
+            <strong id="company-name">Sales Assistant</strong>
+            <small id="assistant-name">Grounded product guidance</small>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <span class="status-chip" id="system-status">
+            <i></i>
+            <span>Connecting</span>
+          </span>
+          <button class="ghost-button" id="admin-toggle" type="button">Admin</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="chat-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Product consultation</p>
+              <h1>Find the right product, with evidence.</h1>
+            </div>
+            <span class="approval-badge">Company approval required</span>
+          </div>
+
+          <div class="messages" id="messages" aria-live="polite">
+            <article class="message assistant">
+              <div class="avatar">AI</div>
+              <div class="bubble">
+                <p>
+                  Tell me what you are building, the dimensions, finish, and estimated
+                  quantity. I can compare documented options and prepare a request for the
+                  company.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="suggestions" id="suggestions">
+            <button type="button">Which trimless profile fits a plasterboard ceiling?</button>
+            <button type="button">Compare wall-panel corner profiles and prices</button>
+            <button type="button">What is included with an LED profile?</button>
+          </div>
+
+          <form class="composer" id="chat-form">
+            <label class="sr-only" for="chat-input">Message</label>
+            <textarea
+              id="chat-input"
+              rows="2"
+              maxlength="8000"
+              placeholder="Ask about products, prices, dimensions, delivery, or returns..."
+              required
+            ></textarea>
+            <button class="primary-button send-button" type="submit">Send</button>
+          </form>
+          <p class="composer-note">
+            Answers cite indexed company sources. Prices and availability remain subject to
+            company approval.
+          </p>
+        </section>
+
+        <aside class="cart-panel panel">
+          <div class="cart-title">
+            <div>
+              <p class="eyebrow">Quote request</p>
+              <h2>Your selection</h2>
+            </div>
+            <span id="cart-count">0</span>
+          </div>
+
+          <div class="cart-items" id="cart-items">
+            <div class="empty-state">
+              <span>+</span>
+              <p>Add a recommendation or enter an item manually.</p>
+            </div>
+          </div>
+
+          <form class="manual-item" id="manual-item-form">
+            <div class="two-fields">
+              <label>
+                SKU
+                <input id="manual-sku" placeholder="Y6131" />
+              </label>
+              <label>
+                Quantity
+                <input id="manual-quantity" type="number" min="0.001" step="0.001" value="1" />
+              </label>
+            </div>
+            <label>
+              Product name
+              <input id="manual-name" placeholder="Product or requested specification" required />
+            </label>
+            <div class="two-fields">
+              <label>
+                Unit
+                <input id="manual-unit" value="metre" required />
+              </label>
+              <label>
+                Indicative unit price
+                <input id="manual-price" type="number" min="0" step="0.01" placeholder="Optional" />
+              </label>
+            </div>
+            <button class="secondary-button" type="submit">Add item</button>
+          </form>
+
+          <div class="cart-footer">
+            <div class="estimated-total">
+              <span>Indicative total</span>
+              <strong id="cart-total">Not fully priced</strong>
+            </div>
+            <button class="primary-button" id="open-checkout" type="button" disabled>
+              Send for company approval
+            </button>
+            <p>
+              This submits a request only. It does not charge, manufacture, reserve stock, or
+              ship anything.
+            </p>
+          </div>
+        </aside>
+      </main>
+
+      <section class="admin-panel panel hidden" id="admin-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Company workspace</p>
+            <h2>Knowledge and approvals</h2>
+          </div>
+          <button class="ghost-button" id="close-admin" type="button">Close</button>
+        </div>
+        <div class="admin-key-row">
+          <label>
+            Admin API key
+            <input id="admin-key" type="password" placeholder="Enter the configured key" />
+          </label>
+          <button class="secondary-button" id="save-admin-key" type="button">Use key</button>
+        </div>
+        <div class="admin-grid">
+          <section>
+            <h3>Upload documents</h3>
+            <p>PDF, DOCX, XLSX, CSV, TXT, Markdown, HTML, or JSON.</p>
+            <form id="upload-form">
+              <input id="upload-files" type="file" multiple required />
+              <label>
+                Source authority
+                <input id="upload-authority" type="number" min="0" max="100" value="85" />
+              </label>
+              <button class="secondary-button" type="submit">Upload and index</button>
+            </form>
+          </section>
+          <section>
+            <h3>Scrape a website</h3>
+            <p>Same-domain pages are crawled with robots.txt and private-network protection.</p>
+            <form id="scrape-form">
+              <input id="scrape-url" type="url" placeholder="https://company.com" required />
+              <div class="two-fields">
+                <label>
+                  Max pages
+                  <input id="scrape-pages" type="number" min="1" max="300" value="40" />
+                </label>
+                <label>
+                  Max depth
+                  <input id="scrape-depth" type="number" min="0" max="8" value="3" />
+                </label>
+              </div>
+              <button class="secondary-button" type="submit">Crawl and index</button>
+            </form>
+          </section>
+        </div>
+        <div class="admin-lists">
+          <section>
+            <div class="section-title">
+              <h3>Indexed sources</h3>
+              <button class="text-button" id="refresh-sources" type="button">Refresh</button>
+            </div>
+            <div id="source-list" class="source-list"></div>
+          </section>
+          <section>
+            <div class="section-title">
+              <h3>Pending approvals</h3>
+              <button class="text-button" id="refresh-orders" type="button">Refresh</button>
+            </div>
+            <div id="approval-list" class="approval-list"></div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <dialog id="checkout-dialog">
+      <form id="checkout-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Approval request</p>
+            <h2>Send your selection to the company</h2>
+          </div>
+          <button class="icon-button" id="close-checkout" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="two-fields">
+          <label>
+            Name
+            <input id="customer-name" autocomplete="name" required />
+          </label>
+          <label>
+            Company
+            <input id="customer-company" autocomplete="organization" />
+          </label>
+        </div>
+        <div class="two-fields">
+          <label>
+            Email
+            <input id="customer-email" type="email" autocomplete="email" />
+          </label>
+          <label>
+            Phone
+            <input id="customer-phone" autocomplete="tel" />
+          </label>
+        </div>
+        <label>
+          Delivery address or city
+          <textarea id="delivery-address" rows="2"></textarea>
+        </label>
+        <label>
+          Note to the company
+          <textarea id="customer-note" rows="3"></textarea>
+        </label>
+        <label class="consent-row">
+          <input id="customer-consent" type="checkbox" required />
+          <span>
+            I agree that these contact and order details may be sent to the company for review.
+          </span>
+        </label>
+        <div class="approval-callout">
+          The request will remain <strong>pending company approval</strong>. No payment or
+          fulfillment happens here.
+        </div>
+        <button class="primary-button" type="submit">Submit approval request</button>
+      </form>
+    </dialog>
+
+    <dialog id="order-dialog">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Order status</p>
+          <h2 id="order-status-title">Pending company approval</h2>
+        </div>
+        <button class="icon-button" id="close-order" type="button" aria-label="Close">×</button>
+      </div>
+      <div id="order-status-body"></div>
+      <button class="primary-button hidden" id="customer-confirm" type="button">
+        Accept approved company terms
+      </button>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>
+

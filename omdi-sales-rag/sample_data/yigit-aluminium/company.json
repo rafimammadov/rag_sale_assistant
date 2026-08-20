@@ -1,0 +1,50 @@
+{
+  "company": {
+    "name": "Yiğit Alüminyum",
+    "slug": "yigit-aluminium",
+    "assistant_name": "Yiğit Ürün Asistanı",
+    "website": "https://www.yigitaluminium.com/",
+    "sales_email": "info@yigitaluminyumprofil.com",
+    "sales_webhook_url": null,
+    "currency": "TRY",
+    "description": "İstanbul merkezli alüminyum profil üreticisi. Ürün grupları LED profilleri, PVC duvar panel profilleri, süpürgelik, fuga ve alçıpan profillerini içerir.",
+    "prompt_overrides": "Müşterinin dilinde, kısa ve günlük ifadelerle yanıt ver. Ürün kodlarını aynen koru. Genel ürün sorularında yalnızca ana ürün gruplarını özetle ve müşteriye kullanım alanını sor. Fiyat, KDV, minimum sipariş, profil uzunluğu, koli miktarı veya teslimat için farklı kaynaklar farklı değer veriyorsa, yalnızca soruyla ilgili olduğunda iki değeri kısaca belirt ve şirket teyidi gerektiğini söyle. Şirket onayı kuralını yalnızca teklif veya sipariş konuşulurken belirt."
+  },
+  "sources": [
+    {
+      "file": "led_profiles_price_list_2026-07-24.pdf",
+      "name": "LED Profilleri İnovasyon Kataloğu ve Fiyat Listesi (24.07.2026)",
+      "authority_score": 95,
+      "notes": "Uploaded company price list; prices shown as +KDV and include diffuser where stated."
+    },
+    {
+      "file": "pvc_wall_panel_price_list_2026-07-23.pdf",
+      "name": "PVC Duvar Panel Profilleri Fiyat Listesi (23.07.2026)",
+      "authority_score": 95,
+      "notes": "Uploaded company price list; prices shown as excluding KDV."
+    },
+    {
+      "file": "product_image_catalog.xlsx",
+      "name": "Ürün Görsel ve Kod Kataloğu",
+      "authority_score": 80,
+      "notes": "Product codes, names, lengths, colors, and embedded product images."
+    },
+    {
+      "file": "catalog_snapshot.csv",
+      "name": "Ürün Kodları Yapılandırılmış Katalog Özeti",
+      "authority_score": 80,
+      "notes": "Text-normalized extraction from the supplied XLSX for exact SKU retrieval."
+    },
+    {
+      "file": "website_seed.md",
+      "name": "Website Snapshot Notes (30.07.2026)",
+      "authority_score": 55,
+      "notes": "Offline starter snapshot only. Live scraping should supersede this for current facts."
+    }
+  ],
+  "crawl": {
+    "max_pages": 80,
+    "max_depth": 4,
+    "authority_score": 70
+  }
+}
